@@ -1,0 +1,2 @@
+import { HistoryDetail } from "@/components/history-detail";
+export default async function HistoryDetailPage({ params }: { params: Promise<{ id: string }> }) { const { id } = await params; return <main className="mx-auto max-w-5xl px-6 py-12"><p className="text-sm font-semibold uppercase tracking-widest text-[var(--brand)]">Audit trail</p><h1 className="mt-2 text-4xl font-bold tracking-tight">History record</h1><HistoryDetail jobId={id} /></main>; }
