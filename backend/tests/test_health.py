@@ -8,7 +8,7 @@ def test_liveness() -> None:
         response = client.get("/api/v1/health/live")
 
     assert response.status_code == 200
-    assert response.json() == {"status": "ok", "service": "publishpilot-api"}
+    assert response.json() == {"status": "ok", "service": "twpublisher-api"}
 
 
 def test_readiness() -> None:

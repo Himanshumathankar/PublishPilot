@@ -34,7 +34,7 @@ def require_user(
     article_publisher_session: Annotated[str | None, Cookie(alias=COOKIE)] = None,
 ) -> str:
     if not article_publisher_session:
-        raise ServiceError("AUTH_REQUIRED", "Sign in to access PublishPilot.", 401)
+        raise ServiceError("AUTH_REQUIRED", "Sign in to access TWPublisher.", 401)
     try:
         decoded = base64.urlsafe_b64decode(article_publisher_session.encode()).decode()
         username, expires, signature = decoded.rsplit(":", 2)

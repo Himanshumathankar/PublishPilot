@@ -161,7 +161,7 @@ export function IntegrationSettingsForm() {
             <input
               value={rankMath}
               onChange={(e) => setRankMath(e.target.value)}
-            placeholder="/wp-json/publishpilot/v1/rank-math"
+            placeholder="/wp-json/twpublisher/v1/rank-math"
               className="mt-1 w-full rounded-lg border px-4 py-3 font-normal"
             />
           </label>

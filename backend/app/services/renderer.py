@@ -37,8 +37,10 @@ def render_article(article: ArticleDocument, image_urls: dict[str, str]) -> str:
             )
             output.append(
                 '<!-- wp:image {"align":"center"} -->'
-                '<figure class="wp-block-image aligncenter">'
-                f'<img src="{html.escape(url, quote=True)}" alt=""/>{caption}'
+                '<figure class="wp-block-image aligncenter" style="text-align:center;">'
+                f'<img src="{html.escape(url, quote=True)}" alt="" '
+                'style="display:block;margin-left:auto;margin-right:auto;"/>'
+                f"{caption}"
                 "</figure><!-- /wp:image -->"
             )
     return "\n".join(output)

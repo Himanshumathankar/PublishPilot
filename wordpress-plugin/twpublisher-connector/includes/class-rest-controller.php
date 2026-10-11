@@ -2,10 +2,10 @@
 /**
  * Rank Math REST endpoint.
  *
- * @package PublishPilotConnector
+ * @package TWPublisherConnector
  */
 
-namespace PublishPilot\Connector;
+namespace TWPublisher\Connector;
 
 use WP_Error;
 use WP_REST_Request;
@@ -18,7 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Handles authenticated Rank Math metadata updates. */
 final class Rest_Controller {
-	const NAMESPACE = 'publishpilot/v1';
+	const NAMESPACE = 'twpublisher/v1';
+	const PUBLISHPILOT_NAMESPACE = 'publishpilot/v1';
 	const LEGACY_NAMESPACE = 'article-publisher/v1';
 	const ROUTE = '/rank-math';
 	const AUTHORS_ROUTE = '/authors';
@@ -27,6 +28,16 @@ final class Rest_Controller {
 	public function register_routes() {
 		register_rest_route(
 			self::NAMESPACE,
+			self::ROUTE,
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'permission_callback' => array( $this, 'permissions_check' ),
+				'callback'            => array( $this, 'update_metadata' ),
+				'args'                => $this->get_endpoint_args(),
+			)
+		);
+		register_rest_route(
+			self::PUBLISHPILOT_NAMESPACE,
 			self::ROUTE,
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
@@ -47,6 +58,15 @@ final class Rest_Controller {
 		);
 		register_rest_route(
 			self::NAMESPACE,
+			self::AUTHORS_ROUTE,
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'permission_callback' => array( $this, 'authors_permissions_check' ),
+				'callback'            => array( $this, 'get_authors' ),
+			)
+		);
+		register_rest_route(
+			self::PUBLISHPILOT_NAMESPACE,
 			self::AUTHORS_ROUTE,
 			array(
 				'methods'             => WP_REST_Server::READABLE,
@@ -69,8 +89,8 @@ final class Rest_Controller {
 	public function authors_permissions_check() {
 		if ( ! current_user_can( 'edit_others_posts' ) ) {
 			return new WP_Error(
-				'publishpilot_authors_forbidden',
-				__( 'You are not allowed to assign other post authors.', 'publishpilot-connector' ),
+				'twpublisher_authors_forbidden',
+				__( 'You are not allowed to assign other post authors.', 'twpublisher-connector' ),
 				array( 'status' => rest_authorization_required_code() )
 			);
 		}
@@ -138,16 +158,16 @@ final class Rest_Controller {
 
 		if ( ! $post || 'post' !== $post->post_type ) {
 			return new WP_Error(
-				'publishpilot_invalid_post',
-				__( 'A valid WordPress post is required.', 'publishpilot-connector' ),
+				'twpublisher_invalid_post',
+				__( 'A valid WordPress post is required.', 'twpublisher-connector' ),
 				array( 'status' => 404 )
 			);
 		}
 
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return new WP_Error(
-				'publishpilot_forbidden',
-				__( 'You are not allowed to update this post.', 'publishpilot-connector' ),
+				'twpublisher_forbidden',
+				__( 'You are not allowed to update this post.', 'twpublisher-connector' ),
 				array( 'status' => rest_authorization_required_code() )
 			);
 		}
@@ -169,8 +189,8 @@ final class Rest_Controller {
 
 		if ( ! $verified ) {
 			return new WP_Error(
-				'publishpilot_rank_math_update_failed',
-				__( 'Rank Math metadata could not be verified.', 'publishpilot-connector' ),
+				'twpublisher_rank_math_update_failed',
+				__( 'Rank Math metadata could not be verified.', 'twpublisher-connector' ),
 				array( 'status' => 500 )
 			);
 		}

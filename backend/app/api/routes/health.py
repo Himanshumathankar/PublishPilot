@@ -12,7 +12,7 @@ router = APIRouter()
 
 class HealthResponse(BaseModel):
     status: Literal["ok"]
-    service: str = "publishpilot-api"
+    service: str = "twpublisher-api"
 
 
 @router.get("/live", response_model=HealthResponse)

@@ -1,22 +1,22 @@
-=== PublishPilot Connector ===
-Contributors: himanshumathankar
+=== TWPublisher Connector ===
+Contributors: takeweb
 Tags: publishing, editorial, rank-math, rest-api, multisite
 Requires at least: 6.0
-Tested up to: 6.8
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Securely connects the PublishPilot editorial application to WordPress for author discovery and Rank Math SEO metadata publishing.
+Securely connects the TWPublisher editorial application to WordPress for author discovery and Rank Math SEO metadata publishing.
 
 == Description ==
 
-PublishPilot Connector is the WordPress-side integration for PublishPilot, an editorial workflow application used to review and publish articles across multiple WordPress websites.
+TWPublisher Connector is the WordPress-side integration for TWPublisher, an editorial workflow application used to review and publish articles across multiple WordPress websites.
 
 The plugin provides two authenticated REST API capabilities:
 
-* Lists users who have the `edit_posts` capability so PublishPilot can present an accurate author selector, including sites with custom roles.
+* Lists users who have the `edit_posts` capability so TWPublisher can present an accurate author selector, including sites with custom roles.
 * Writes and verifies the Rank Math SEO title and meta description for a specific standard WordPress post.
 
 The plugin does not create posts, upload media, collect analytics, display advertising, add front-end branding, or modify WordPress core. Post creation and media uploads use the standard WordPress REST API.
@@ -37,24 +37,24 @@ Use a dedicated WordPress account with only the permissions required by your pub
 
 This plugin does not collect telemetry, set cookies, track visitors, or contact third-party servers. It only responds to authenticated requests received by the WordPress REST API.
 
-When a site administrator intentionally connects the separate PublishPilot application, that application sends publishing data to this WordPress website. The plugin itself does not transmit WordPress data to PublishPilot or any other external service.
+When a site administrator intentionally connects the separate TWPublisher application, that application sends publishing data to this WordPress website. The plugin itself does not transmit WordPress data to TWPublisher or any other external service.
 
-Rank Math is not bundled with this plugin. If Rank Math is installed, PublishPilot Connector updates two Rank Math post-meta fields requested by the authenticated publishing client.
+Rank Math is not bundled with this plugin. If Rank Math is installed, TWPublisher Connector updates two Rank Math post-meta fields requested by the authenticated publishing client.
 
 == Installation ==
 
 1. If the former Article Publisher Rank Math Bridge is installed, deactivate and delete that plugin first. Its settings are not stored in WordPress, so no site data is removed.
-2. Upload the `publishpilot-connector` folder to `/wp-content/plugins/`, or install the ZIP from Plugins > Add New > Upload Plugin.
-3. Activate PublishPilot Connector.
-4. In WordPress, create an Application Password for the account PublishPilot will use.
-5. In PublishPilot Settings, add the website URL, username, and Application Password.
-6. Use `/wp-json/publishpilot/v1/rank-math` as the Rank Math endpoint.
+2. Upload the `twpublisher-connector` folder to `/wp-content/plugins/`, or install the ZIP from Plugins > Add New > Upload Plugin.
+3. Activate TWPublisher Connector.
+4. In WordPress, create an Application Password for the account TWPublisher will use.
+5. In TWPublisher Settings, add the website URL, username, and Application Password.
+6. Use `/wp-json/twpublisher/v1/rank-math` as the Rank Math endpoint.
 
 == Frequently Asked Questions ==
 
 = Does this plugin publish posts? =
 
-PublishPilot publishes posts through the standard WordPress REST API. This connector handles author discovery and Rank Math metadata only.
+TWPublisher publishes posts through the standard WordPress REST API. This connector handles author discovery and Rank Math metadata only.
 
 = Why is the author endpoint needed? =
 
@@ -74,29 +74,37 @@ Yes. Version 2.0 retains the previous endpoint namespace as a compatibility alia
 
 = Does the plugin support automatic updates? =
 
-WordPress can provide standard automatic updates after PublishPilot Connector is approved and hosted in the WordPress.org Plugin Directory. The plugin intentionally does not install updates from a custom server.
+WordPress can provide standard automatic updates after TWPublisher Connector is approved and hosted in the WordPress.org Plugin Directory. The plugin intentionally does not install updates from a custom server.
 
 == REST API ==
 
-`GET /wp-json/publishpilot/v1/authors`
+`GET /wp-json/twpublisher/v1/authors`
 
 Returns eligible post authors. Requires `edit_others_posts`.
 
-`POST /wp-json/publishpilot/v1/rank-math`
+`POST /wp-json/twpublisher/v1/rank-math`
 
 Accepts `post_id`, `title`, and `description`. Requires permission to edit the specified post.
 
 == Upgrade Notice ==
 
+= 2.0.1 =
+
+Improves image metadata handling, compatibility, and security.
+
 = 2.0.0 =
 
-Rebranded as PublishPilot Connector. Existing endpoint URLs remain supported for compatibility.
+Rebranded as TWPublisher Connector. Existing endpoint URLs remain supported for compatibility.
 
 == Changelog ==
 
+= 2.0.1 =
+* Fixed image metadata handling.
+* Improved compatibility and security.
+
 = 2.0.0 =
-* Renamed the plugin to PublishPilot Connector.
-* Added the PublishPilot REST namespace while retaining legacy routes.
+* Renamed the plugin to TWPublisher Connector.
+* Added the TWPublisher REST namespace while retaining legacy routes.
 * Expanded security, privacy, installation, and usage documentation.
 * Detects eligible authors using the `edit_posts` capability for custom-role compatibility.
 * Returns current WordPress display names and usernames.

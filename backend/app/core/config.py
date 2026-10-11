@@ -8,7 +8,7 @@ from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
-    app_name: str = "PublishPilot API"
+    app_name: str = "TWPublisher API"
     app_env: str = "development"
     app_secret_key: str = "development-only-secret-key-change-me"
     app_username: str = "admin"

@@ -7,8 +7,8 @@ import type { ArticleBlock, ArticleDocument } from "@/types/article";
 type ArticleImage = {
   id: string;
   filename: string;
-  caption?: string;
-  alt_text?: string;
+  caption?: string | null;
+  alt_text?: string | null;
   source: string;
 };
 type Article = ArticleDocument & {
@@ -69,7 +69,7 @@ function blocksToHtml(article: Article) {
       }
       if (block.type === "table")
         return `<table><tbody>${block.rows.map((row) => `<tr>${row.map((cell) => `<td>${cell.html}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
-      return `<figure class="wp-block-image aligncenter"><img data-image-id="${block.image_id}" src="${API_URL}${block.source}" alt="">${block.caption ? `<figcaption class="wp-element-caption">${escapeText(block.caption)}</figcaption>` : ""}</figure>`;
+      return `<figure class="wp-block-image aligncenter" style="text-align:center;"><img data-image-id="${block.image_id}" src="${API_URL}${block.source}" alt="" style="display:block;margin-left:auto;margin-right:auto;">${block.caption ? `<figcaption class="wp-element-caption">${escapeText(block.caption)}</figcaption>` : ""}</figure>`;
     })
     .join("\n");
 }
@@ -574,12 +574,17 @@ export function ArticlePreview({ id }: { id: string }) {
 
   async function saveImage(imageId: string) {
     const draft = imageDrafts[imageId];
+    if (!draft) return;
     const updated = await apiRequest<ArticleImage>(
       `/articles/${id}/images/${imageId}`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(draft),
+        body: JSON.stringify({
+          filename: draft.filename,
+          caption: draft.caption ?? "",
+          alt_text: draft.alt_text ?? "",
+        }),
       },
     );
     setImageDrafts((current) => ({
@@ -605,7 +610,11 @@ export function ArticlePreview({ id }: { id: string }) {
       await apiRequest<ArticleImage>(`/articles/${id}/images/${image.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(draft),
+        body: JSON.stringify({
+          filename: draft.filename,
+          caption: draft.caption ?? "",
+          alt_text: draft.alt_text ?? "",
+        }),
       });
     }
   }

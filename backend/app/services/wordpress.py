@@ -84,11 +84,16 @@ class WordPressService:
     async def authors(self) -> list[dict]:
         try:
             try:
-                plugin_authors = await self.request("GET", "/wp-json/publishpilot/v1/authors")
+                plugin_authors = await self.request("GET", "/wp-json/twpublisher/v1/authors")
             except ServiceError:
-                plugin_authors = await self.request(
-                    "GET", "/wp-json/article-publisher/v1/authors"
-                )
+                try:
+                    plugin_authors = await self.request(
+                        "GET", "/wp-json/publishpilot/v1/authors"
+                    )
+                except ServiceError:
+                    plugin_authors = await self.request(
+                        "GET", "/wp-json/article-publisher/v1/authors"
+                    )
             if not isinstance(plugin_authors, list):
                 raise ServiceError("WORDPRESS_API_ERROR", "Invalid author list.", 502)
             result = plugin_authors

@@ -2,10 +2,10 @@
 /**
  * Main plugin coordinator.
  *
- * @package PublishPilotConnector
+ * @package TWPublisherConnector
  */
 
-namespace PublishPilot\Connector;
+namespace TWPublisher\Connector;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

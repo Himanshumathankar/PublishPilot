@@ -1,6 +1,6 @@
-# PublishPilot
+# TWPublisher
 
-PublishPilot is a deterministic, multi-site WordPress publishing workspace. It imports editor-approved source articles, preserves their wording, formatting, order, images, captions, tables, and links, and publishes them through the WordPress REST API. It does not rewrite, summarize, improve, or generate content.
+TWPublisher is a deterministic, multi-site WordPress publishing workspace. It imports editor-approved source articles, preserves their wording, formatting, order, images, captions, tables, and links, and publishes them through the WordPress REST API. It does not rewrite, summarize, improve, or generate content.
 
 The DOCX workflow is implemented: sequential parsing, preview, WordPress category/media/post operations, featured images, Rank Math metadata, draft/publish, and history. Google Docs and Sheets intentionally follow the complete DOCX workflow.
 
@@ -66,8 +66,8 @@ For host-based backend execution, change the database host in `DATABASE_URL` fro
 | `DATABASE_URL` | Async SQLAlchemy PostgreSQL connection URL |
 | `APP_ENV` | `development`, `test`, or `production` |
 | `APP_SECRET_KEY` | At least 32 random characters in deployed environments |
-| `APP_USERNAME` | Username used to sign in to PublishPilot |
-| `APP_PASSWORD` | Strong password used to sign in to PublishPilot |
+| `APP_USERNAME` | Username used to sign in to TWPublisher |
+| `APP_PASSWORD` | Strong password used to sign in to TWPublisher |
 | `BACKEND_CORS_ORIGINS` | Comma-separated allowed browser origins |
 | `MAX_UPLOAD_SIZE_MB` | DOCX upload ceiling; defaults to 25 |
 | `MAX_DOCX_UNCOMPRESSED_MB` | Expanded DOCX archive safety ceiling; defaults to 200 |
@@ -108,7 +108,7 @@ The target DOCX milestone is: upload → safe parse → validate → preview →
 
 ### Using the editor
 
-1. Open <http://localhost:3000> and sign in with the PublishPilot credentials configured as
+1. Open <http://localhost:3000> and sign in with the TWPublisher credentials configured as
    `APP_USERNAME` and `APP_PASSWORD`.
 2. Open **Settings** to add each WordPress website with its dedicated username and Application
    Password, then configure its Rank Math endpoint. Passwords are encrypted before database
@@ -136,9 +136,9 @@ The application tests connectivity, fetches categories, uploads media, creates d
 
 ## Rank Math setup
 
-WordPress core REST may not expose Rank Math's `rank_math_title` and `rank_math_description` post meta. The integration first tries registered REST meta and verifies the returned values. If that reports `RANK_MATH_UPDATE_ERROR`, install `wordpress-plugin/publishpilot-connector.zip` from **Plugins → Add Plugin → Upload Plugin**, activate **PublishPilot Connector**, and set the site's Rank Math endpoint to `/wp-json/publishpilot/v1/rank-math`. The endpoint requires `edit_post` permission and updates only the two approved fields. Never edit WordPress core.
+WordPress core REST may not expose Rank Math's `rank_math_title` and `rank_math_description` post meta. The integration first tries registered REST meta and verifies the returned values. If that reports `RANK_MATH_UPDATE_ERROR`, install `wordpress-plugin/twpublisher-connector.zip` from **Plugins → Add Plugin → Upload Plugin**, activate **TWPublisher Connector**, and set the site's Rank Math endpoint to `/wp-json/twpublisher/v1/rank-math`. The endpoint requires `edit_post` permission and updates only the two approved fields. Never edit WordPress core.
 
-When migrating from **Article Publisher Rank Math Bridge**, deactivate and delete the old plugin before uploading PublishPilot Connector so WordPress does not load both copies. Existing saved legacy endpoint URLs remain valid. Standard automatic updates become available after the plugin is approved and hosted in the WordPress.org Plugin Directory; the plugin does not bypass the directory with a custom updater.
+When migrating from **Article Publisher Rank Math Bridge** or **PublishPilot Connector**, deactivate and delete the old plugin before uploading TWPublisher Connector so WordPress does not load multiple copies. Existing saved legacy endpoint URLs remain valid. Standard automatic updates become available after the plugin is approved and hosted in the WordPress.org Plugin Directory; the plugin does not bypass the directory with a custom updater.
 
 ## Google Docs API setup
 

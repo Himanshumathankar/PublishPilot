@@ -57,8 +57,8 @@ class ArticleMetadataUpdate(BaseModel):
 
 class ArticleImageUpdate(BaseModel):
     filename: str
-    caption: str = ""
-    alt_text: str = ""
+    caption: str | None = None
+    alt_text: str | None = None
 
 
 async def _persist_import(
@@ -486,8 +486,8 @@ async def update_image_metadata(
     image.generated_filename = slugify_filename(
         Path(payload.filename).stem, ".webp", f"image-{image.position + 1}"
     )
-    image.caption = payload.caption.strip() or None
-    image.alt_text = payload.alt_text.strip() or None
+    image.caption = (payload.caption or "").strip() or None
+    image.alt_text = (payload.alt_text or "").strip() or None
     content = dict(article.content)
     blocks = [dict(block) for block in content["blocks"]]
     image_blocks = [block for block in blocks if block["type"] == "image"]

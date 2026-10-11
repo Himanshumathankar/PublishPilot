@@ -20,6 +20,19 @@ def test_editor_replaces_local_image_source_for_wordpress() -> None:
     assert "localhost" not in rendered
 
 
+def test_editor_enforces_center_alignment_independently_of_theme_css() -> None:
+    value = (
+        '<figure class="wp-block-image aligncenter">'
+        '<img class="aligncenter" data-image-id="image-1" src="http://localhost/image">'
+        "</figure>"
+    )
+
+    rendered = render_editor_html(value, {"image-1": "https://example.test/media.webp"})
+
+    assert 'style="text-align:center;"' in rendered
+    assert "display:block;margin-left:auto;margin-right:auto;" in rendered
+
+
 def test_editor_preserves_also_read_highlight_class() -> None:
     sanitized = sanitize_editor_html(
         '<p class="highlight-also-read">Also Read: Related story</p>'
